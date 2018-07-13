@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Scene {
 
-	private List<Entity> gameObjects = new ArrayList<>();
+	private List<Entity> gameObjects = new ArrayList<Entity>();
 	
 	public void addDisplayObject(Entity object) {
 		if(object == null) {
