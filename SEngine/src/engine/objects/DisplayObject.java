@@ -1,9 +1,11 @@
 package engine.objects;
 
+import java.util.Observable;
+
 import engine.graphics.VertexArray;
 import engine.textures.Texture;
 
-public class DisplayObject {
+public class DisplayObject extends Observable {
 	
 	private Texture texture;
 	private VertexArray vertexArray;
@@ -30,5 +32,7 @@ public class DisplayObject {
 	public void destroy() {
 		this.getVertexArray().delete();
 		this.texture.delete();
+		notifyObservers();
 	}
+	
 }

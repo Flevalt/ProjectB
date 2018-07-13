@@ -2,8 +2,10 @@ package engine.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Scene {
+public class Scene implements Observer {
 
 	private List<Entity> gameObjects = new ArrayList<Entity>();
 	
@@ -15,6 +17,7 @@ public class Scene {
 			System.err.println("Duplicate GameObject in Scene!");
 		}else {
 			gameObjects.add(object);
+			object.addObserver(this);
 		}
 	}
 
@@ -27,6 +30,12 @@ public class Scene {
 	
 	public List<Entity> getDisplayObjects(){
 		return gameObjects;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		gameObjects.remove((Entity) arg1);
+		
 	}
 
 }
