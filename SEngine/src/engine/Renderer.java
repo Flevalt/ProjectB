@@ -6,6 +6,9 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import Exceptions.OpenGLException;
+import engine.graphics.Color;
+import engine.graphics.DisplayManager;
 import engine.graphics.Shader;
 import engine.graphics.VertexArray;
 import engine.math.Matrix4f;
@@ -24,33 +27,74 @@ public class Renderer {
 	private Scene currentScene;
 	private int fps;
 	private Shader shader;
+	private DisplayManager display;
+	private Matrix4f projectionMatrix;
 	
+	private static final float FIELD_OF_VIEW = 70;
+	private static final float NEAR_PLANE = 0.1f;
+	private static final float FAR_PLANE = 1000;
 	
-	public Renderer() {
-		
+	/**
+	 * @param display - The {@link DisplayManager} on which the {@link Renderer} is rendering.
+	 * @param shader - Using the standard shader if it set to {@link Null}.
+	 */
+	public Renderer(DisplayManager display, Shader shader) {
+		if(shader == null) {
+			this.shader = new Shader();
+		}else {
+			this.shader = shader;
+		}
+		initialise(display);	
 	}
 	
-	public Renderer(int red, int green, int blue, int alpha) {
-		GL11.glClearColor(red, green, blue, alpha);
+	/**
+	 * @param display - The {@link DisplayManager} on which the {@link Renderer} is rendering.
+	 * @param color - {@link Color} of the Background.
+	 * @param shader - Using the standard shader if it set to {@link Null}.
+	 */
+	public Renderer(DisplayManager display, Color color, Shader shader) {
+		if(shader == null) {
+			this.shader = new Shader();
+		}else {
+			this.shader = shader;
+		}		
+		initialise(display);
+		GL11.glClearColor(color.red, color.green, color.blue, color.alpha);
+	}
+	
+	private void initialise(DisplayManager display) {
+		this.display = display;
+		
+		GL11.glEnable(GL11.GL_DEPTH_TEST);	
+		//Setting the projection matrix
+		createProjectionMatrix();
+		shader.enable();
+		shader.loadprojectionMatrix(projectionMatrix);
+		shader.disable();		
+	}
+	
+	public boolean isInitialised() {
+		if(shader == null || projectionMatrix == null) {
+			return false;
+		}
+		return true;
 	}
 	
 	public void render() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+				
+		shader.enable();
 		
-		if(shader != null) {
-			shader.enable();
-		}
 		//Render every element in the scene
 		if(currentScene != null) {
 			for(Entity obj : currentScene.getDisplayObjects()) {
 				if(!obj.isHidden()) {
-					renderDisplayObject(obj);					
+					renderDisplayObject(obj);	
 				}
 			}
 		}
-		if(shader != null) {
-			shader.disable();
-		}
+		
+		shader.disable();
 	}
 	
 	private void renderDisplayObject(Entity obj) {
@@ -91,6 +135,21 @@ public class Renderer {
 	
 	public Shader getShader() {
 		return shader;
+	}
+	
+	private void createProjectionMatrix() {	
+		float aspectRatio = (float) display.getWindowWidth() / (float) display.getWindowheight();
+		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FIELD_OF_VIEW / 2f))) * aspectRatio);
+		float x_scale = y_scale / aspectRatio;
+		float frustum_length = FAR_PLANE - NEAR_PLANE;
+		
+		projectionMatrix = new Matrix4f();
+		projectionMatrix.m00 = x_scale;
+		projectionMatrix.m11 = y_scale;
+		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMatrix.m23 = -1;
+		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMatrix.m33 = 0;
 	}
 	
 }
