@@ -6,18 +6,24 @@ import org.lwjgl.opengl.GL;
 
 import org.lwjgl.opengl.GL11;
 
+import Exceptions.EngineException;
 import Exceptions.OpenGLException;
 import engine.display.Camera;
 import engine.display.DisplayManager;
+import engine.display.RenderMode;
 import engine.display.Resolution;
 import engine.graphics.Color;
+import engine.graphics.Shader;
 import engine.objects.Scene;
 
 public abstract class Engine {
 	
 	private DisplayManager display = new DisplayManager();;
 	private Renderer renderer;
+	private RenderMode mode = RenderMode.MODE_3D;
 	private Camera camera = new Camera();
+	private boolean isInitialised;
+	private boolean rendererSet;
 
 	
 	private void initialise() {
@@ -26,23 +32,42 @@ public abstract class Engine {
 			throw new RuntimeException("Could not initialise GLFW!");
 		}
 			
-		display.createWindow();			
+		display.createWindow();		
 									
 		GLFW.glfwSwapInterval(1); //FPS
-		GL.createCapabilities();		
-		renderer = new Renderer(display, camera, Color.white(), null);		
-		init();
+		GL.createCapabilities();	
 		
-	}
+		//If renderer is not already set, create a new renderer.
+		if(!rendererSet) {
+			renderer = new Renderer(display, camera, mode, Color.white(), null);				
+		}
+		isInitialised = true;
+		init();	
+	}	
 	
-	public void createWindow(Resolution resolution) {
-		display.setResolution(resolution);
-		display.createWindow();
+	public void setResolution(Resolution resolution) {
+		this.display.setResolution(resolution);
 	}
-
 	
 	public Camera getCamera() {
 		return camera;
+	}
+	
+	public void setRenderMode(RenderMode mode) {
+		if(isInitialised) {
+			renderer.changeRenderMode(mode);
+		}else {
+			this.mode = mode;
+		}
+	}
+	
+	/**
+	 * Set a custom shader for the renderer.
+	 * @param shader -  Shader to be used by the renderer.
+	 */
+	public void setCustomShader(Shader shader) {
+		renderer = new Renderer(display, camera, mode, Color.white(), shader);
+		rendererSet = true;
 	}
 	
 	/**
@@ -83,7 +108,11 @@ public abstract class Engine {
 	}
 	
 	public Renderer getRenderer() {
-		return renderer;
+		if(isInitialised) {
+			return renderer;			
+		}else {
+			throw new EngineException("Engine not initialised!");
+		}
 	}
 	
 	public DisplayManager getDisplay() {
@@ -95,7 +124,11 @@ public abstract class Engine {
 	}
 	
 	public int getFps() {
-		return renderer.getFps();
+		if(isInitialised) {
+			return renderer.getFps();
+		}else {
+			throw new EngineException("Engine not initialised!");
+		}		
 	}
 	
 	/**
