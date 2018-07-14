@@ -1,7 +1,6 @@
 package engine.display;
 
 import engine.math.Vector3f;
-import engine.objects.Entity;
 
 public class Camera {
 	
@@ -26,7 +25,6 @@ public class Camera {
 		this.position.z += z;
 	}
 	
-	
 	/**
 	 * Adds the {@link Vector3f} to the position of the {@link Camera}.
 	 * @param vector to be added.
@@ -37,6 +35,18 @@ public class Camera {
 		this.position.z += vector.z;
 	}
 
+	public void rotate(Vector3f vector) {
+		this.pitch += vector.x;
+		this.yaw += vector.y;
+		this.roll += vector.z;
+	}
+	
+	public void rotate(float x, float y, float z) {
+		this.pitch += x;
+		this.yaw += y;
+		this.roll += z;
+	}
+	
 	public Vector3f getPosition() {
 		return position;
 	}
