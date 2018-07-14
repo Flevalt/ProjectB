@@ -59,7 +59,12 @@ public class Renderer {
 	 */
 	public Renderer(DisplayManager display, Camera camera, RenderMode mode, Color color, Shader shader) {
 		if(shader == null) {
-			this.shader = new Shader();
+			if(mode == RenderMode.MODE_2D) {
+				this.shader = new Shader();				
+			}
+			if(mode == RenderMode.MODE_3D) {
+				this.shader = new Shader3D();				
+			}
 		}else {
 			this.shader = shader;
 		}		
@@ -98,6 +103,7 @@ public class Renderer {
 	}
 	
 	private void setProjectionMatrix() {		
+		System.out.println("MODE:" + renderMode.toString());
 		if(renderMode == RenderMode.MODE_3D) {
 			shader.enable();
 			float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
