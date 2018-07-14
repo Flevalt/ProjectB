@@ -6,11 +6,14 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import Exceptions.EngineException;
 import engine.display.Camera;
 import engine.display.DisplayManager;
+import engine.display.RenderMode;
 import engine.graphics.Color;
-import engine.graphics.Shader;
+import engine.graphics.Shader3D;
 import engine.graphics.Model;
+import engine.graphics.Shader;
 import engine.math.Matrix4f;
 import engine.objects.Entity;
 import engine.objects.Scene;
@@ -30,6 +33,7 @@ public class Renderer {
 	private DisplayManager display;
 	private Camera camera;
 	private boolean isInitialised;
+	private RenderMode renderMode = RenderMode.MODE_3D;
 	
 	private static final float FIELD_OF_VIEW = 70;
 	private static final float NEAR_PLANE = 0.1f;
@@ -39,13 +43,13 @@ public class Renderer {
 	 * @param display - The {@link DisplayManager} on which the {@link Renderer} is rendering.
 	 * @param shader - Using the standard shader if it set to {@link Null}.
 	 */
-	public Renderer(DisplayManager display, Camera camera, Shader shader) {
+	public Renderer(DisplayManager display, Camera camera, RenderMode mode, Shader shader) {
 		if(shader == null) {
 			this.shader = new Shader();
 		}else {
 			this.shader = shader;
 		}
-		initialise(display, camera);	
+		initialise(display, camera, mode);	
 	}
 	
 	/**
@@ -53,26 +57,55 @@ public class Renderer {
 	 * @param color - {@link Color} of the Background.
 	 * @param shader - Using the standard shader if it set to {@link Null}.
 	 */
-	public Renderer(DisplayManager display, Camera camera, Color color, Shader shader) {
+	public Renderer(DisplayManager display, Camera camera, RenderMode mode, Color color, Shader shader) {
 		if(shader == null) {
 			this.shader = new Shader();
 		}else {
 			this.shader = shader;
 		}		
-		initialise(display, camera);
+		initialise(display, camera, mode);
 		GL11.glClearColor(color.red, color.green, color.blue, color.alpha);
 	}
 	
-	private void initialise(DisplayManager display, Camera camera) {
+	/**
+	 * Changes the rendermode and resets the camera.
+	 * @param mode - Change the {@link RenderMode} of the renderer.
+	 */
+	public void changeRenderMode(RenderMode mode) {
+		if(mode == null) {
+			throw new IllegalArgumentException("Render mode can't be null!");
+		}
+		if(shader == null) {
+			throw new EngineException("Shader not set!");
+		}
+		if(mode == RenderMode.MODE_2D) {
+			shader = new Shader();
+		}
+		if(mode == RenderMode.MODE_3D) {
+			shader = new Shader3D();
+		}	
+		setProjectionMatrix();
+	}
+	
+	private void initialise(DisplayManager display, Camera camera, RenderMode mode) {
 		this.display = display;
 		this.camera = camera;
+		this.renderMode = mode;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);	
 		//Setting the projection matrix
-		shader.enable();
-		float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
-		shader.loadProjectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
-		shader.disable();	
+		setProjectionMatrix();
 		isInitialised = true;
+	}
+	
+	private void setProjectionMatrix() {		
+		if(renderMode == RenderMode.MODE_3D) {
+			shader.enable();
+			float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
+			((Shader3D) shader).loadProjectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
+			shader.disable();
+		}else {
+			camera.setPosition(0, 0, 0);
+		}
 	}
 	
 	public boolean isInitialised() {
@@ -82,6 +115,9 @@ public class Renderer {
 		return true;
 	}
 	
+	/**
+	 * Start rendering all objects within the current {@link Scene}.
+	 */
 	public void render() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 				

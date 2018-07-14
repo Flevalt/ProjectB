@@ -3,13 +3,14 @@ package engine.graphics;
 import engine.display.Camera;
 import engine.math.Matrix4f;
 
-public class Shader extends ShaderProgram {
-
-	private static final String FRAGMENT_FILE = "res/shader/object1.frag";
-	private static final String VERTEX_FILE = "res/shader/object1.vert";
+public class Shader extends ShaderProgram{
+	
+	private static final String FRAGMENT_FILE = "res/shader/FragmentShader.frag";
+	private static final String VERTEX_FILE = "res/shader/2DVertexShader.vert";
 
 	public Shader(){
 		super(Shader.load(VERTEX_FILE, FRAGMENT_FILE));
+		System.out.println(VERTEX_FILE);
 	}
 	
 	public Shader(int programID) {
@@ -24,10 +25,6 @@ public class Shader extends ShaderProgram {
 	
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.setUniformMatrix4f("transformationMatrix", matrix);
-	}
-	
-	public void loadProjectionMatrix(Matrix4f projection) {
-		super.setUniformMatrix4f("projectionMatrix", projection);
 	}
 	
 	public void loadViewMatrix(Camera camera) {

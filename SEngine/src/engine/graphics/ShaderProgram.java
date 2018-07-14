@@ -98,7 +98,7 @@ public abstract class ShaderProgram {
 	}
 	
 	/**
-	 * Creates an {@link Shader} from the paths to vertex and fragment shader files.
+	 * Creates an {@link Shader3D} from the paths to vertex and fragment shader files.
 	 * @param vertPath - Path to the vertex shader.
 	 * @param fragPath - Path to the fragment shader.
 	 * @return handle to the shader program.
@@ -110,7 +110,7 @@ public abstract class ShaderProgram {
 	}
 	
 	/**
-	 * Creates an {@link Shader} from a given vertex and fragment shader.
+	 * Creates an {@link Shader3D} from a given vertex and fragment shader.
 	 * @param vert - Vertex shader as {@link String}.
 	 * @param frag - Fragment shader as {@link String}.
 	 * @return handle to the shader program.
