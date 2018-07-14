@@ -1,6 +1,6 @@
 package Exceptions;
 
-public class OpenGLException extends Exception{
+public class OpenGLException extends RuntimeException{
 	
 	/**
 	 * 
