@@ -51,7 +51,7 @@ public abstract class ShaderProgram {
 	}
 	
 	public void loadMatrix(int location, Matrix4f matrix) {
-		
+		GL20.glUniform4fv(location, matrix.toFloatBuffer());
 	}
 	
 	public void setUniform1i(String name, int value) {
