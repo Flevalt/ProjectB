@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import Exceptions.OpenGLException;
 import engine.graphics.Color;
 import engine.graphics.DisplayManager;
 import engine.graphics.Shader;
@@ -28,7 +27,7 @@ public class Renderer {
 	private int fps;
 	private Shader shader;
 	private DisplayManager display;
-	private Matrix4f projectionMatrix;
+	private boolean isInitialised;
 	
 	private static final float FIELD_OF_VIEW = 70;
 	private static final float NEAR_PLANE = 0.1f;
@@ -67,14 +66,15 @@ public class Renderer {
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);	
 		//Setting the projection matrix
-		createProjectionMatrix();
 		shader.enable();
-		shader.loadprojectionMatrix(projectionMatrix);
-		shader.disable();		
+		float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
+		shader.loadprojectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
+		shader.disable();	
+		isInitialised = true;
 	}
 	
 	public boolean isInitialised() {
-		if(shader == null || projectionMatrix == null) {
+		if(shader == null || !isInitialised) {
 			return false;
 		}
 		return true;
@@ -108,7 +108,7 @@ public class Renderer {
 		Matrix4f transformationMatrix = Matrix4f.createTransformationMatrix(
 				obj.getPosition(), obj.getRotX(), obj.getRotY(), obj.getRotZ(), obj.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
-		
+
 		//Activate and bind the textures
 		GL13.glActiveTexture(obj.getTexture().getTextureId());
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, obj.getTexture().getTextureId());
@@ -130,26 +130,11 @@ public class Renderer {
 	}
 	
 	public void setShader(Shader shader) {
-		this.shader = shader;
+		this.shader = shader;	
 	}
 	
 	public Shader getShader() {
 		return shader;
-	}
-	
-	private void createProjectionMatrix() {	
-		float aspectRatio = (float) display.getWindowWidth() / (float) display.getWindowheight();
-		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FIELD_OF_VIEW / 2f))) * aspectRatio);
-		float x_scale = y_scale / aspectRatio;
-		float frustum_length = FAR_PLANE - NEAR_PLANE;
-		
-		projectionMatrix = new Matrix4f();
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-		projectionMatrix.m33 = 0;
 	}
 	
 }
