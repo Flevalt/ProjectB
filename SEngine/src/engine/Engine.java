@@ -6,70 +6,44 @@ import org.lwjgl.opengl.GL;
 
 import org.lwjgl.opengl.GL11;
 
-import engine.graphics.Shader;
-import engine.input.InputKeyCallback;
-import engine.input.InputMouseCallback;
+import Exceptions.OpenGLException;
+import engine.graphics.Color;
+import engine.graphics.DisplayManager;
+import engine.graphics.Resolution;
 import engine.objects.Scene;
 
 public abstract class Engine {
 	
-	private long window;
-	private int width = 800;
-	private int height = 600;
+	private DisplayManager display = new DisplayManager();;
 	private Renderer renderer;
-	private String title = "";
+
 	
 	private void initialise() {
 		GLFWErrorCallback.createPrint(System.err).set();
 		if(GLFW.glfwInit() == false) {
 			throw new RuntimeException("Could not initialise GLFW!");
 		}
-		window = GLFW.glfwCreateWindow(width, height, title, 0, 0); //Creating the window
-		GLFW.glfwMakeContextCurrent(window); 
-		
-		GLFW.glfwSetKeyCallback(window, new InputKeyCallback());
-		GLFW.glfwSetMouseButtonCallback(window, new InputMouseCallback());
-					
+			
+		display.createWindow();			
+									
 		GLFW.glfwSwapInterval(1); //FPS
-		GL.createCapabilities();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		
-		renderer = new Renderer(0, 0, 0, 1);		
-		renderer.setShader(new Shader());
-		
+		GL.createCapabilities();		
+		renderer = new Renderer(display, Color.white(), null);		
 		init();
+		
 	}
 	
-	/**
-	 * Sets the resolution of the game window.
-	 * default is 800 x 600.
-	 * @param width of the window.
-	 * @param height of the window.
-	 */
-	public void setResolution(int width, int height) {
-		if(width < 0 || height < 0) {
-			throw new IllegalArgumentException("Dimentsions of the window mustn't be negative");
-		}
-		this.width = width;
-		this.height = height;
+	public void createWindow(Resolution resolution) {
+		display.setResolution(resolution);
+		display.createWindow();
 	}
-	
-	/**
-	 * Sets the title of the game window.
-	 * @param title of the window.
-	 */
-	public void setTitle(String title) {
-		if(title == null) {
-			throw new IllegalArgumentException("Title mustn't be null");
-		}
-		this.title = title;
-	}
+
 	
 	/**
 	 * Closes the game window.
 	 */
 	public void close() {
-		GLFW.glfwDestroyWindow(window);
+		GLFW.glfwDestroyWindow(display.getWindowId());
 	}
 	
 	/**
@@ -78,10 +52,13 @@ public abstract class Engine {
 	public void run() {
 		initialise();			
 
-		while(!GLFW.glfwWindowShouldClose(window)) {			
+		if(!renderer.isInitialised()) {
+			throw new OpenGLException("Shader is not set for the current renderer!");
+		}
+		while(!GLFW.glfwWindowShouldClose(display.getWindowId())) {			
 			update();
 			renderer.render();			
-			GLFW.glfwSwapBuffers(window);			
+			GLFW.glfwSwapBuffers(display.getWindowId());			
 			GLFW.glfwPollEvents();
 		}
 		
@@ -101,6 +78,10 @@ public abstract class Engine {
 	
 	public Renderer getRenderer() {
 		return renderer;
+	}
+	
+	public DisplayManager getDisplay() {
+		return display;
 	}
 	
 	public void setScene(Scene scene) {
