@@ -2,6 +2,11 @@ package engine.display;
 
 import engine.math.Vector3f;
 
+/**
+ * @author BpZ
+ *
+ * Camera that defines what is diaplyed on the window.
+ */
 public class Camera {
 	
 	private Vector3f position = new Vector3f(0, 0, 1);
@@ -23,6 +28,17 @@ public class Camera {
 		this.position.x += x;
 		this.position.y += y;
 		this.position.z += z;
+	}
+	/**
+	 * Changes the position values of the {@link Camera}.
+	 * @param x - Position on the x axis.
+	 * @param y - Position on the y axis.
+	 * @param z - Position on the z axis.
+	 */
+	public void setPosition(float x, float y, float z) {
+		this.position.x = x;
+		this.position.y = y;
+		this.position.z = z;
 	}
 	
 	/**
