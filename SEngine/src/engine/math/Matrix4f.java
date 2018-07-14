@@ -3,6 +3,7 @@ package engine.math;
 import java.nio.FloatBuffer;
 import java.util.Vector;
 
+import engine.display.Camera;
 import engine.utils.BufferUtils;
 
 public class Matrix4f {
@@ -61,6 +62,18 @@ public class Matrix4f {
     	Matrix4f.rotate((float) Math.toRadians(rx),new Vector3f(0, 0, 1), matrix);
     	Matrix4f.scale(scale, scale, scale, matrix);
     	return matrix;
+    }
+    
+    public static Matrix4f createViewMatrix(Camera camera) {
+    	Matrix4f viewMatrix = new Matrix4f();
+        viewMatrix.setIdentity();
+        Matrix4f.rotate(camera.getPitch(), new Vector3f(1, 0, 0), viewMatrix);
+        Matrix4f.rotate(camera.getYaw(), new Vector3f(0, 1, 0), viewMatrix);
+        Matrix4f.rotate(camera.getRoll(), new Vector3f(0, 0, 1), viewMatrix);
+        Vector3f cameraPos = camera.getPosition();
+        Vector3f negativeCameraPos = new Vector3f(-cameraPos.x,-cameraPos.y,-cameraPos.z);
+        Matrix4f.translate(negativeCameraPos, viewMatrix);
+        return viewMatrix;
     }
 
     /**

@@ -15,7 +15,7 @@ import engine.utils.BufferUtils;
  * TODO: Add check if vertex array was deleted.
  * TODO: Add method for adding texture.
  */
-public class VertexArray {
+public class Model {
 	
 	/**
 	 * The index in the VAO in which the vertex attribute data is stored.
@@ -70,7 +70,7 @@ public class VertexArray {
 	 * 				 	|		|
 	 *		       (0,1)|_______|(1,1)
 	 */
-	public VertexArray(float [] vertices, byte[] indices, float[] textureCoordinates) {
+	public Model(float [] vertices, byte[] indices, float[] textureCoordinates) {
 		if(vertices == null || indices == null || textureCoordinates == null) {
 			throw new IllegalArgumentException("Can't instantiate VertexArray with null!");
 		}			
@@ -83,7 +83,7 @@ public class VertexArray {
 		unbindBuffers();
 	}
 	
-	public VertexArray(float [] vertices, byte[] indices) {
+	public Model(float [] vertices, byte[] indices) {
 		if(vertices == null || indices == null) {
 			throw new IllegalArgumentException("Can't instantiate VertexArray with null!");
 		}			
@@ -179,7 +179,7 @@ public class VertexArray {
 	}
 	
 	/**
-	 * Binds the VAO of the {@link VertexArray} and draws it.
+	 * Binds the VAO of the {@link Model} and draws it.
 	 */
 	public void render() {		
 		bind();
@@ -201,8 +201,8 @@ public class VertexArray {
 	}
 	
 	/**
-	 * Deletes all buffers in the current {@link VertexArray}.
-	 * This frees the resources and makes the {@link VertexArray} unusable.
+	 * Deletes all buffers in the current {@link Model}.
+	 * This frees the resources and makes the {@link Model} unusable.
 	 */
 	public void delete() {
 		GL15.glDeleteBuffers(vao);

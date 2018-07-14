@@ -6,10 +6,11 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import engine.display.Camera;
+import engine.display.DisplayManager;
 import engine.graphics.Color;
-import engine.graphics.DisplayManager;
 import engine.graphics.Shader;
-import engine.graphics.VertexArray;
+import engine.graphics.Model;
 import engine.math.Matrix4f;
 import engine.objects.Entity;
 import engine.objects.Scene;
@@ -27,6 +28,7 @@ public class Renderer {
 	private int fps;
 	private Shader shader;
 	private DisplayManager display;
+	private Camera camera;
 	private boolean isInitialised;
 	
 	private static final float FIELD_OF_VIEW = 70;
@@ -37,13 +39,13 @@ public class Renderer {
 	 * @param display - The {@link DisplayManager} on which the {@link Renderer} is rendering.
 	 * @param shader - Using the standard shader if it set to {@link Null}.
 	 */
-	public Renderer(DisplayManager display, Shader shader) {
+	public Renderer(DisplayManager display, Camera camera, Shader shader) {
 		if(shader == null) {
 			this.shader = new Shader();
 		}else {
 			this.shader = shader;
 		}
-		initialise(display);	
+		initialise(display, camera);	
 	}
 	
 	/**
@@ -51,24 +53,24 @@ public class Renderer {
 	 * @param color - {@link Color} of the Background.
 	 * @param shader - Using the standard shader if it set to {@link Null}.
 	 */
-	public Renderer(DisplayManager display, Color color, Shader shader) {
+	public Renderer(DisplayManager display, Camera camera, Color color, Shader shader) {
 		if(shader == null) {
 			this.shader = new Shader();
 		}else {
 			this.shader = shader;
 		}		
-		initialise(display);
+		initialise(display, camera);
 		GL11.glClearColor(color.red, color.green, color.blue, color.alpha);
 	}
 	
-	private void initialise(DisplayManager display) {
+	private void initialise(DisplayManager display, Camera camera) {
 		this.display = display;
-		
+		this.camera = camera;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);	
 		//Setting the projection matrix
 		shader.enable();
 		float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
-		shader.loadprojectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
+		shader.loadProjectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
 		shader.disable();	
 		isInitialised = true;
 	}
@@ -101,8 +103,10 @@ public class Renderer {
 		//Bind the resources
 		GL30.glBindVertexArray(obj.getVertexArray().getVertexArrayObjectId());
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, obj.getVertexArray().getIndexBufferObjectId());
-		GL20.glEnableVertexAttribArray(VertexArray.VERTEX_ATTRIBUTE_INDEX);
-		GL20.glEnableVertexAttribArray(VertexArray.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
+		GL20.glEnableVertexAttribArray(Model.VERTEX_ATTRIBUTE_INDEX);
+		GL20.glEnableVertexAttribArray(Model.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
+		
+		shader.loadViewMatrix(camera);
 		
 		//set the transformation matrix
 		Matrix4f transformationMatrix = Matrix4f.createTransformationMatrix(
@@ -115,8 +119,8 @@ public class Renderer {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, obj.getVertexArray().getCount(), GL11.GL_UNSIGNED_BYTE, 0); //Render elements
 		
 		//Unbind the resources
-		GL20.glDisableVertexAttribArray(VertexArray.VERTEX_ATTRIBUTE_INDEX);
-		GL20.glDisableVertexAttribArray(VertexArray.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
+		GL20.glDisableVertexAttribArray(Model.VERTEX_ATTRIBUTE_INDEX);
+		GL20.glDisableVertexAttribArray(Model.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
 		GL30.glBindVertexArray(0);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

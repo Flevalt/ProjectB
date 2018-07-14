@@ -2,13 +2,13 @@ package engine.objects;
 
 import java.util.Observable;
 
-import engine.graphics.VertexArray;
+import engine.graphics.Model;
 import engine.math.Vector3f;
 import engine.textures.Texture;
 
 public class Entity extends Observable{
 
-	private DisplayObject displayObject;
+	private TexturedModel texturedModel;
 	private Vector3f position;
 	private float rotX;
 	private float rotY;
@@ -16,10 +16,10 @@ public class Entity extends Observable{
 	private float scale;
 	private boolean hidden;
 	
-	public Entity(Texture texture, VertexArray vertexArray, Vector3f position, float rotX, float rotY,
+	public Entity(Texture texture, Model model, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
 		super();
-		this.displayObject = new DisplayObject(texture, vertexArray);
+		this.texturedModel = new TexturedModel(texture, model);
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -27,10 +27,10 @@ public class Entity extends Observable{
 		this.scale = scale;
 	}	
 	
-	public Entity(DisplayObject displayObject, Vector3f position, float rotX, float rotY,
+	public Entity(TexturedModel displayObject, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
 		super();
-		this.displayObject = displayObject;
+		this.texturedModel = displayObject;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -83,12 +83,12 @@ public class Entity extends Observable{
 		this.rotZ += vector.z;
 	}
 
-	public DisplayObject getDisplayObject() {
-		return displayObject;
+	public TexturedModel getDisplayObject() {
+		return texturedModel;
 	}
 
-	public void setDisplayObject(DisplayObject displayObject) {
-		this.displayObject = displayObject;
+	public void setDisplayObject(TexturedModel displayObject) {
+		this.texturedModel = displayObject;
 	}
 
 	public Vector3f getPosition() {
@@ -144,16 +144,16 @@ public class Entity extends Observable{
 	}
 	
 	public Texture getTexture() {
-		if(displayObject != null) {
-			return displayObject.getTexture();			
+		if(texturedModel != null) {
+			return texturedModel.getTexture();			
 		}else {
 			return null;
 		}
 	}
 
-	public VertexArray getVertexArray() {
-		if(displayObject != null) {
-			return displayObject.getVertexArray();		
+	public Model getVertexArray() {
+		if(texturedModel != null) {
+			return texturedModel.getVertexArray();		
 		}else {
 			return null;
 		}

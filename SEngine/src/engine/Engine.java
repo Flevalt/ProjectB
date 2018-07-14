@@ -7,15 +7,17 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 import Exceptions.OpenGLException;
+import engine.display.Camera;
+import engine.display.DisplayManager;
+import engine.display.Resolution;
 import engine.graphics.Color;
-import engine.graphics.DisplayManager;
-import engine.graphics.Resolution;
 import engine.objects.Scene;
 
 public abstract class Engine {
 	
 	private DisplayManager display = new DisplayManager();;
 	private Renderer renderer;
+	private Camera camera = new Camera();
 
 	
 	private void initialise() {
@@ -28,7 +30,7 @@ public abstract class Engine {
 									
 		GLFW.glfwSwapInterval(1); //FPS
 		GL.createCapabilities();		
-		renderer = new Renderer(display, Color.white(), null);		
+		renderer = new Renderer(display, camera, Color.white(), null);		
 		init();
 		
 	}
@@ -38,6 +40,10 @@ public abstract class Engine {
 		display.createWindow();
 	}
 
+	
+	public Camera getCamera() {
+		return camera;
+	}
 	
 	/**
 	 * Closes the game window.

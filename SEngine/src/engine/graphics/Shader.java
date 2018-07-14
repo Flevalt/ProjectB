@@ -1,5 +1,6 @@
 package engine.graphics;
 
+import engine.display.Camera;
 import engine.math.Matrix4f;
 
 public class Shader extends ShaderProgram {
@@ -17,15 +18,19 @@ public class Shader extends ShaderProgram {
 	
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(VertexArray.VERTEX_ATTRIBUTE_INDEX, "position");
-		super.bindAttribute(VertexArray.TEXTURE_COORDINATE_ATTRIBUTE_INDEX, "textureCoords");
+		super.bindAttribute(Model.VERTEX_ATTRIBUTE_INDEX, "position");
+		super.bindAttribute(Model.TEXTURE_COORDINATE_ATTRIBUTE_INDEX, "textureCoords");
 	}
 	
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.setUniformMatrix4f("transformationMatrix", matrix);
 	}
 	
-	public void loadprojectionMatrix(Matrix4f projection) {
+	public void loadProjectionMatrix(Matrix4f projection) {
 		super.setUniformMatrix4f("projectionMatrix", projection);
+	}
+	
+	public void loadViewMatrix(Camera camera) {
+		super.setUniformMatrix4f("viewMatrix", Matrix4f.createViewMatrix(camera));
 	}
 }

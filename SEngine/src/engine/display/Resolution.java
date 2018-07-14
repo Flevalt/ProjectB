@@ -1,4 +1,4 @@
-package engine.graphics;
+package engine.display;
 
 public enum Resolution {
 	SVGA(800, 600),

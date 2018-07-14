@@ -2,18 +2,18 @@ package engine.objects;
 
 import java.util.Observable;
 
-import engine.graphics.VertexArray;
+import engine.graphics.Model;
 import engine.textures.Texture;
 
-public class DisplayObject extends Observable {
+public class TexturedModel extends Observable {
 	
 	private Texture texture;
-	private VertexArray vertexArray;
+	private Model model;
 		
-	public DisplayObject(Texture texture, VertexArray vertexArray) {
+	public TexturedModel(Texture texture, Model model) {
 		super();
 		this.texture = texture;
-		this.vertexArray = vertexArray;
+		this.model = model;
 	}
 	
 	public Texture getTexture() {
@@ -22,11 +22,11 @@ public class DisplayObject extends Observable {
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 	}
-	public VertexArray getVertexArray() {
-		return vertexArray;
+	public Model getVertexArray() {
+		return model;
 	}
-	public void setVertexArray(VertexArray vertexArray) {
-		this.vertexArray = vertexArray;
+	public void setVertexArray(Model vertexArray) {
+		this.model = vertexArray;
 	}
 	
 	public void destroy() {

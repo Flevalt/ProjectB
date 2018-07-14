@@ -1,6 +1,6 @@
 package engine.objects;
 
-import engine.graphics.VertexArray;
+import engine.graphics.Model;
 import engine.math.Vector3f;
 import engine.textures.Texture;
 
@@ -20,34 +20,34 @@ public class GameObject extends Entity {
 	public int level;
 	public String name;
 	
-	public GameObject(String name, DisplayObject displayObject) {
+	public GameObject(String name, TexturedModel displayObject) {
 		super(displayObject, new Vector3f(0, 0, 0), 0, 0, 0, 1);
 		this.name = name;
 	}
 	
-	public GameObject(String name, String texturePath, VertexArray vertexArray) {
+	public GameObject(String name, String texturePath, Model vertexArray) {
 		super(new Texture(texturePath), vertexArray, new Vector3f(0, 0, 0), 0, 0, 0, 1);
 		this.name = name;
 	}	
 	
-	public GameObject(String name, Texture texture, VertexArray vertexArray,
+	public GameObject(String name, Texture texture, Model vertexArray,
 			Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(texture, vertexArray, position, rotX, rotY, rotZ, scale);
 		this.name = name;
 	}	
 	
 	public GameObject(String name, String texturePath,
-			VertexArray vertexArray, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+			Model vertexArray, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super(new Texture(texturePath), vertexArray, position, rotX, rotY, rotZ, scale);
 		this.name = name;
 	}	
 	
-	public GameObject(Texture texture, VertexArray vertexArray, Vector3f position, float rotX, float rotY,
+	public GameObject(Texture texture, Model vertexArray, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
 		super(texture, vertexArray, position, rotX, rotY, rotZ, scale);
 	}	
 	
-	public GameObject(String texturePath, VertexArray vertexArray, Vector3f position, float rotX, float rotY,
+	public GameObject(String texturePath, Model vertexArray, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
 		super(new Texture(texturePath), vertexArray, position, rotX, rotY, rotZ, scale);
 	}	

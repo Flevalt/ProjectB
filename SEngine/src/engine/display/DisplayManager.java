@@ -1,4 +1,4 @@
-package engine.graphics;
+package engine.display;
 
 import org.lwjgl.glfw.GLFW;
 
