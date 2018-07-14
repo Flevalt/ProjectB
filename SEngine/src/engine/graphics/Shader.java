@@ -10,7 +10,6 @@ public class Shader extends ShaderProgram{
 
 	public Shader(){
 		super(Shader.load(VERTEX_FILE, FRAGMENT_FILE));
-		System.out.println(VERTEX_FILE);
 	}
 	
 	public Shader(int programID) {
