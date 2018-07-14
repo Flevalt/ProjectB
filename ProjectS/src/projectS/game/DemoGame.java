@@ -27,6 +27,7 @@ public class DemoGame extends Engine {
 	public void update() {
 		/*
 		 * Change the position of the object with arrow keys.
+		 * Prints the position of the object.
 		 */
 		if(Input.keys[Input.KEY_LEFT]) {
 			character1.changePosition(-0.05f, 0f, 0f);	
