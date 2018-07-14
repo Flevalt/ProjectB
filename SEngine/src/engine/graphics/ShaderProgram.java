@@ -35,8 +35,6 @@ public abstract class ShaderProgram {
 	
 	private Map<String, Integer> locationCache = new HashMap<String, Integer>();
 	
-	protected abstract void getAllUniformLocations();
-	
 	public int getUniformLocation(String name) {
 		if(locationCache.containsKey(name)) {
 			return locationCache.get(name);
