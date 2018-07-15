@@ -66,10 +66,10 @@ public class DemoGame extends Engine {
 		if(Input.keys[Input.KEY_D]) {
 			this.getCamera().changePosition(0.05f, 0.0f, 0f);
 		}	
-		if(Input.keys[Input.KEY_E]) {
+		if(Input.keys[Input.KEY_KP_ADD]) {
 			this.getCamera().changePosition(0.0f, 0.0f, -0.05f);
 		}	
-		if(Input.keys[Input.KEY_Q]) {
+		if(Input.keys[Input.KEY_KP_SUBTRACT]) {
 			this.getCamera().changePosition(0.0f, 0.0f, 0.05f);
 		}	
 	}

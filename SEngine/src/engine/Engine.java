@@ -38,7 +38,7 @@ public abstract class Engine {
 		
 		//If renderer is not already set, create a new renderer.
 		if(!rendererSet) {
-			renderer = new Renderer(display, camera, Color.white(), null, RenderMode.MODE_3D);				
+			renderer = new Renderer(display, camera, Color.white(), null, RenderMode.MODE_2D);				
 		}
 		isInitialised = true;
 		init();	

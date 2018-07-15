@@ -78,4 +78,8 @@ public class DisplayManager {
 	public long getWindowId() {
 		return window;
 	}
+	
+	public Resolution getResolution() {
+		return resolution;
+	}
 }

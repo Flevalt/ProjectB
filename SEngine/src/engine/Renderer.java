@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import Exceptions.EngineException;
 import engine.display.Camera;
 import engine.display.DisplayManager;
 import engine.graphics.Color;
@@ -94,19 +95,27 @@ public class Renderer {
 		this.display = display;
 		this.camera = camera;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);	
+		shader.enable();
 		loadProjectionMatrix();
+		shader.disable();
 		isInitialised = true;
 	}
 	
-	private void loadProjectionMatrix() {
-		shader.enable();
-		if(renderMode == RenderMode.MODE_3D) {
-			float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
+	private void loadProjectionMatrix() {	
+		if(!shader.isEnabled()) {
+			throw new EngineException("Shader is not enabled!");
+		}
+		float aspect = (float) display.getWindowWidth() / (float) display.getWindowheight();
+		if(renderMode == RenderMode.MODE_3D) {			
 			shader.loadProjectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
 		}else {
-			shader.loadProjectionMatrix(Matrix4f.orthographic(-1, 1, -1, 1, NEAR_PLANE, FAR_PLANE));
-		}
-		shader.disable();
+			shader.loadProjectionMatrix(Matrix4f.orthographic(
+					-display.getResolution().aspect1() * camera.getPosition().z,
+					display.getResolution().aspect1() * camera.getPosition().z,
+					-display.getResolution().aspect2() * camera.getPosition().z,
+					display.getResolution().aspect2() * camera.getPosition().z,
+					NEAR_PLANE, FAR_PLANE));
+		}	
 	}
 	
 	
@@ -145,7 +154,9 @@ public class Renderer {
 		GL20.glEnableVertexAttribArray(Model.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
 		
 		shader.loadViewMatrix(camera);
-		
+		if(renderMode == RenderMode.MODE_2D) {
+			loadProjectionMatrix();
+		}
 		//set the transformation matrix
 		Matrix4f transformationMatrix = Matrix4f.createTransformationMatrix(
 				obj.getPosition(), obj.getRotX(), obj.getRotY(), obj.getRotZ(), obj.getScale());
