@@ -2,13 +2,11 @@ package projectS.game;
 import engine.Engine;
 import engine.display.DisplayManager;
 import engine.display.Resolution;
-import engine.graphics.Model;
 import engine.input.Input;
 import engine.math.Vector3f;
 import engine.objects.TexturedModel;
 import engine.objects.GameObject;
 import engine.objects.Scene;
-import engine.textures.Texture;
 import engine.utils.FileUtils;
 
 public class DemoGame extends Engine {
