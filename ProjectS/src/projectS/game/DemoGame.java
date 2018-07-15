@@ -1,5 +1,6 @@
 package projectS.game;
 import engine.Engine;
+import engine.display.DisplayManager;
 import engine.display.Resolution;
 import engine.graphics.Model;
 import engine.input.Input;
@@ -18,7 +19,7 @@ public class DemoGame extends Engine {
 	
 	public static void main(String[] args) {
 		DemoGame game = new DemoGame();
-		game.getDisplay().setResolution(Resolution.HD); //Change the resolution
+		DisplayManager.setResolution(Resolution.HD); //Change the resolution
 		//game.getDisplay().activateFullscreen();
 		game.run();
 	}
