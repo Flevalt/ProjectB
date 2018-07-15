@@ -1,4 +1,4 @@
-package engine.display;
+package engine.graphics;
 
 public enum RenderMode {
 	MODE_2D,

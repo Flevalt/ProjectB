@@ -63,6 +63,30 @@ public class Camera {
 		this.roll += z;
 	}
 	
+	/**
+	 * Rotates the camera around its x axis.
+	 * @param angle of the rotation.
+	 */
+	public void tilt(float angle) {
+		this.pitch += angle;
+	}
+	
+	/**
+	 * Rotates the camera around its y axis.
+	 * @param angle of the rotation.
+	 */
+	public void pan(float angle) {
+		this.yaw += angle;
+	}
+	
+	/**
+	 * Rotates the camera around its z axis.
+	 * @param angle of the rotation.
+	 */
+	public void roll(float angle) {
+		this.roll += angle;
+	}
+	
 	public Vector3f getPosition() {
 		return position;
 	}

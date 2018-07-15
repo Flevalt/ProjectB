@@ -1,6 +1,5 @@
 package projectS.game;
 import engine.Engine;
-import engine.display.RenderMode;
 import engine.display.Resolution;
 import engine.graphics.Model;
 import engine.input.Input;
@@ -18,7 +17,6 @@ public class DemoGame extends Engine {
 	public static void main(String[] args) {
 		DemoGame game = new DemoGame();
 		game.getDisplay().setResolution(Resolution.HD); //Change the resolution
-		game.setRenderMode(RenderMode.MODE_3D); //rendering mode allows perspective projection.
 		//game.getDisplay().activateFullscreen();
 		game.run();
 	}
@@ -68,6 +66,12 @@ public class DemoGame extends Engine {
 		if(Input.keys[Input.KEY_D]) {
 			this.getCamera().changePosition(0.05f, 0.0f, 0f);
 		}	
+		if(Input.keys[Input.KEY_E]) {
+			this.getCamera().changePosition(0.0f, 0.0f, -0.05f);
+		}	
+		if(Input.keys[Input.KEY_Q]) {
+			this.getCamera().changePosition(0.0f, 0.0f, 0.05f);
+		}	
 	}
 
 	private void printPosition(GameObject obj) {
@@ -77,12 +81,13 @@ public class DemoGame extends Engine {
 	@Override
 	public void init() {	
 		
+		//2d
 		//this will be changed to create objects without defining their vertices.
 		float[] vertices = new float[]{
-				-0.5f, 0.5f, -1f,
-				-0.5f, -0.5f, -1f,
-				0.5f, -0.5f, -1f,
-				0.5f, 0.5f, -1f,
+				-0.5f, 0.5f, 0f,
+				-0.5f, -0.5f, 0f,
+				0.5f, -0.5f, 0f,
+				0.5f, 0.5f, 0f,
 		};
 		byte[] index = new byte[] {
 				0, 1, 3,
@@ -95,6 +100,7 @@ public class DemoGame extends Engine {
 				1f, 1f,
 				1f, 0f
 		};		
+			
 		//---------------------------------------------------------------
 		
 		Model vertexArray = new Model(vertices, index, tex);
@@ -104,7 +110,7 @@ public class DemoGame extends Engine {
 		character1 = new GameObject("Character1", obj);
 		character2 = new GameObject("Character2", obj);
 		character2.setScale(0.2f);
-		character1.setPosition(new Vector3f(0f, 0f, 0f));
+		character1.setPosition(new Vector3f(0f, 0f, -2f));
 		scene.addDisplayObject(character1);
 		scene.addDisplayObject(character2);
 		setScene(scene);

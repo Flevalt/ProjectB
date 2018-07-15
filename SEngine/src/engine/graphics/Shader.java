@@ -6,7 +6,7 @@ import engine.math.Matrix4f;
 public class Shader extends ShaderProgram{
 	
 	private static final String FRAGMENT_FILE = "res/shader/FragmentShader.frag";
-	private static final String VERTEX_FILE = "res/shader/2DVertexShader.vert";
+	private static final String VERTEX_FILE = "res/shader/VertexShader.vert";
 
 	public Shader(){
 		super(Shader.load(VERTEX_FILE, FRAGMENT_FILE));
@@ -24,6 +24,10 @@ public class Shader extends ShaderProgram{
 	
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.setUniformMatrix4f("transformationMatrix", matrix);
+	}
+	
+	public void loadProjectionMatrix(Matrix4f projection) {
+		super.setUniformMatrix4f("projectionMatrix", projection);
 	}
 	
 	public void loadViewMatrix(Camera camera) {

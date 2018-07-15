@@ -10,9 +10,9 @@ import Exceptions.EngineException;
 import Exceptions.OpenGLException;
 import engine.display.Camera;
 import engine.display.DisplayManager;
-import engine.display.RenderMode;
 import engine.display.Resolution;
 import engine.graphics.Color;
+import engine.graphics.RenderMode;
 import engine.graphics.Shader;
 import engine.objects.Scene;
 
@@ -20,7 +20,6 @@ public abstract class Engine {
 	
 	private DisplayManager display = new DisplayManager();;
 	private Renderer renderer;
-	private RenderMode mode = RenderMode.MODE_3D;
 	private Camera camera = new Camera();
 	private boolean isInitialised;
 	private boolean rendererSet;
@@ -39,7 +38,7 @@ public abstract class Engine {
 		
 		//If renderer is not already set, create a new renderer.
 		if(!rendererSet) {
-			renderer = new Renderer(display, camera, mode, Color.white(), null);				
+			renderer = new Renderer(display, camera, Color.white(), null, RenderMode.MODE_3D);				
 		}
 		isInitialised = true;
 		init();	
@@ -52,21 +51,13 @@ public abstract class Engine {
 	public Camera getCamera() {
 		return camera;
 	}
-	
-	public void setRenderMode(RenderMode mode) {
-		if(isInitialised) {
-			renderer.changeRenderMode(mode);
-		}else {
-			this.mode = mode;
-		}
-	}
-	
+		
 	/**
 	 * Set a custom shader for the renderer.
 	 * @param shader -  Shader to be used by the renderer.
 	 */
 	public void setCustomShader(Shader shader) {
-		renderer = new Renderer(display, camera, mode, Color.white(), shader);
+		renderer = new Renderer(display, camera, Color.white(), shader);
 		rendererSet = true;
 	}
 	
