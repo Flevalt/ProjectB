@@ -9,7 +9,7 @@ public class DisplayManager {
 	
 	private long window;
 	private boolean windowCreated;
-	public static Resolution resolution = Resolution.SVGA;
+	private static Resolution currentResolution = Resolution.SVGA;
 	private String title = "";
 	private boolean fullscreen;
 	
@@ -17,26 +17,12 @@ public class DisplayManager {
 		
 	}
 	
-	public DisplayManager(Resolution resolution) {
-		if(resolution == null) {
-			throw new IllegalArgumentException("Resolution mustn't be null!");
-		}
-		this.resolution = resolution;
-	}
-	
-	public void setResolution(Resolution resolution) {
-		if(resolution == null) {
-			throw new IllegalArgumentException("Resolution mustn't be null!");
-		}
-		this.resolution = resolution;
-	}
-	
 	public int getWindowWidth() {
-		return resolution.width();
+		return currentResolution.width();
 	}
 	
 	public int getWindowheight() {
-		return resolution.height();
+		return currentResolution.height();
 	}
 	
 	public void activateFullscreen() {
@@ -60,9 +46,9 @@ public class DisplayManager {
 	
 	public void createWindow() {
 		if(fullscreen) {
-			window = GLFW.glfwCreateWindow(resolution.width(), resolution.height(), title, GLFW.glfwGetPrimaryMonitor(), 0); //Creating the window			
+			window = GLFW.glfwCreateWindow(currentResolution.width(), currentResolution.height(), title, GLFW.glfwGetPrimaryMonitor(), 0); //Creating the window			
 		}else {
-			window = GLFW.glfwCreateWindow(resolution.width(), resolution.height(), title, 0, 0); //Creating the window			
+			window = GLFW.glfwCreateWindow(currentResolution.width(), currentResolution.height(), title, 0, 0); //Creating the window			
 		}
 		
 		GLFW.glfwMakeContextCurrent(window); 
@@ -77,6 +63,17 @@ public class DisplayManager {
 	
 	public long getWindowId() {
 		return window;
+	}
+	
+	public static Resolution getResolution() {
+		return currentResolution;
+	}
+	
+	public static void setResolution(Resolution resolution) {
+		if(resolution == null) {
+			throw new IllegalArgumentException("Resolution mustn't be null!");
+		}
+		currentResolution = resolution;
 	}
 	
 }

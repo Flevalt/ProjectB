@@ -36,6 +36,11 @@ public class FileUtils {
 		return result.toString();
 	}
 	
+	/**
+	 * Creates a {@link BufferedImage} from a given file url.
+	 * @param path of the image.
+	 * @return {@link BufferedImage} of the given image.
+	 */
 	public static BufferedImage loadImage(String path) {
 		BufferedImage image = null;
 		try {
@@ -47,24 +52,30 @@ public class FileUtils {
 		return image;
 	}
 	
+	/**
+	 * Creates a {@link TexturedModel} from a given path.
+	 * @param path of the image.
+	 * @return {@link TexturedModel} with the given texture.<br>
+	 * 			The size is relative to the width and height of the image.
+	 */
 	public static TexturedModel loadSprite(String path) {
 		BufferedImage image = loadImage(path);	
 		Texture texture = new Texture(image);
 		
-		float modelWidth = ((float)image.getWidth())/((float)DisplayManager.resolution.width());
-		float modelHeight = ((float)image.getHeight())/((float)DisplayManager.resolution.height());
+		float modelWidth = ((float)image.getWidth())/((float)DisplayManager.getResolution().width());
+		float modelHeight = ((float)image.getHeight())/((float)DisplayManager.getResolution().height());
 		
 		float scaling = 2.5f;
 		
 		float[] vertices = new float[] {
 			//Top left point
-			-modelWidth * DisplayManager.resolution.aspect1() / scaling, modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			-modelWidth * DisplayManager.getResolution().aspect1() / scaling, modelHeight * DisplayManager.getResolution().aspect2() / scaling, 0f,
 			//Bottom left point
-			-modelWidth * DisplayManager.resolution.aspect1() / scaling, -modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			-modelWidth * DisplayManager.getResolution().aspect1() / scaling, -modelHeight * DisplayManager.getResolution().aspect2() / scaling, 0f,
 			//Bottom right point
-			modelWidth * DisplayManager.resolution.aspect1() / scaling, -modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			modelWidth * DisplayManager.getResolution().aspect1() / scaling, -modelHeight * DisplayManager.getResolution().aspect2() / scaling, 0f,
 			//Top right point
-			modelWidth * DisplayManager.resolution.aspect1() / scaling, modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f
+			modelWidth * DisplayManager.getResolution().aspect1() / scaling, modelHeight * DisplayManager.getResolution().aspect2() / scaling, 0f
 			
 		};
 		

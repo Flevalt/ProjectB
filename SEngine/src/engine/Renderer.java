@@ -110,10 +110,10 @@ public class Renderer {
 			shader.loadProjectionMatrix(Matrix4f.perspective(FIELD_OF_VIEW, aspect, NEAR_PLANE, FAR_PLANE));
 		}else {
 			shader.loadProjectionMatrix(Matrix4f.orthographic(
-					-DisplayManager.resolution.aspect1() * camera.getPosition().z/5,
-					DisplayManager.resolution.aspect1() * camera.getPosition().z/5,
-					-DisplayManager.resolution.aspect2() * camera.getPosition().z/5,
-					DisplayManager.resolution.aspect2() * camera.getPosition().z/5,
+					-DisplayManager.getResolution().aspect1() * camera.getPosition().z/5,
+					DisplayManager.getResolution().aspect1() * camera.getPosition().z/5,
+					-DisplayManager.getResolution().aspect2() * camera.getPosition().z/5,
+					DisplayManager.getResolution().aspect2() * camera.getPosition().z/5,
 					NEAR_PLANE, FAR_PLANE));
 		}	
 	}
