@@ -8,6 +8,7 @@ import engine.objects.TexturedModel;
 import engine.objects.GameObject;
 import engine.objects.Scene;
 import engine.textures.Texture;
+import engine.utils.FileUtils;
 
 public class DemoGame extends Engine {
 	
@@ -80,34 +81,15 @@ public class DemoGame extends Engine {
 	
 	@Override
 	public void init() {	
-		
-		//2d
-		//this will be changed to create objects without defining their vertices.
-		float[] vertices = new float[]{
-				-0.5f, 0.5f, 0f,
-				-0.5f, -0.5f, 0f,
-				0.5f, -0.5f, 0f,
-				0.5f, 0.5f, 0f,
-		};
-		byte[] index = new byte[] {
-				0, 1, 3,
-				3, 1, 2
-		};
-		
-		float[] tex = new float[] {
-				0f, 0f,
-				0f, 1f,
-				1f, 1f,
-				1f, 0f
-		};		
 			
 		//---------------------------------------------------------------
 		
-		Model vertexArray = new Model(vertices, index, tex);
-		TexturedModel obj = new TexturedModel(new Texture("res/pictures/object1.png"), vertexArray);
+		TexturedModel obj = FileUtils.loadSprite("res/pictures/object1.png");
+		
+		TexturedModel obj2 = FileUtils.loadSprite("res/pictures/character.jpg");
 		
 		Scene scene = new Scene();
-		character1 = new GameObject("Character1", obj);
+		character1 = new GameObject("Character1", obj2);
 		character2 = new GameObject("Character2", obj);
 		character2.setScale(0.2f);
 		character1.setPosition(new Vector3f(0f, 0f, -2f));

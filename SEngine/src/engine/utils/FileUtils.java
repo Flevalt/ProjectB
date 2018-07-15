@@ -8,6 +8,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import engine.display.DisplayManager;
+import engine.graphics.Model;
+import engine.objects.TexturedModel;
+import engine.textures.Texture;
+
 public class FileUtils {
 	
 	private FileUtils() {
@@ -40,6 +45,44 @@ public class FileUtils {
 			System.err.println("Reason: " + e.getMessage());
 		}
 		return image;
+	}
+	
+	public static TexturedModel loadSprite(String path) {
+		BufferedImage image = loadImage(path);	
+		Texture texture = new Texture(image);
+		
+		float modelWidth = ((float)image.getWidth())/((float)DisplayManager.resolution.width());
+		float modelHeight = ((float)image.getHeight())/((float)DisplayManager.resolution.height());
+		
+		float scaling = 2.5f;
+		
+		float[] vertices = new float[] {
+			//Top left point
+			-modelWidth * DisplayManager.resolution.aspect1() / scaling, modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			//Bottom left point
+			-modelWidth * DisplayManager.resolution.aspect1() / scaling, -modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			//Bottom right point
+			modelWidth * DisplayManager.resolution.aspect1() / scaling, -modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f,
+			//Top right point
+			modelWidth * DisplayManager.resolution.aspect1() / scaling, modelHeight * DisplayManager.resolution.aspect2() / scaling, 0f
+			
+		};
+		
+		byte[] index = new byte[] {
+				0, 1, 2,
+				0, 2, 3
+		};
+		
+		float[] tex = new float[] {
+				0f, 0f,
+				0f, 1f,
+				1f, 1f,
+				1f, 0f
+		};		
+		
+		Model model = new Model(vertices, index, tex);
+		TexturedModel texturedModel = new TexturedModel(texture, model);
+		return texturedModel;
 	}
 	
 }

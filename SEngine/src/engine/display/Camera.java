@@ -9,7 +9,7 @@ import engine.math.Vector3f;
  */
 public class Camera {
 	
-	private Vector3f position = new Vector3f(0, 0, 1);
+	private Vector3f position = new Vector3f(0, 0, 0.5f);
 	private float pitch;
 	private float yaw;
 	private float roll;

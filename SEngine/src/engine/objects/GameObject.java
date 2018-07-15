@@ -20,8 +20,8 @@ public class GameObject extends Entity {
 	public int level;
 	public String name;
 	
-	public GameObject(String name, TexturedModel displayObject) {
-		super(displayObject, new Vector3f(0, 0, 0), 0, 0, 0, 1);
+	public GameObject(String name, TexturedModel texturedModel) {
+		super(texturedModel, new Vector3f(0, 0, 0), 0, 0, 0, 1);
 		this.name = name;
 	}
 	
@@ -30,26 +30,26 @@ public class GameObject extends Entity {
 		this.name = name;
 	}	
 	
-	public GameObject(String name, Texture texture, Model vertexArray,
+	public GameObject(String name, Texture texture, Model model,
 			Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		super(texture, vertexArray, position, rotX, rotY, rotZ, scale);
+		super(texture, model, position, rotX, rotY, rotZ, scale);
 		this.name = name;
 	}	
 	
 	public GameObject(String name, String texturePath,
-			Model vertexArray, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		super(new Texture(texturePath), vertexArray, position, rotX, rotY, rotZ, scale);
+			Model model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		super(new Texture(texturePath), model, position, rotX, rotY, rotZ, scale);
 		this.name = name;
 	}	
 	
-	public GameObject(Texture texture, Model vertexArray, Vector3f position, float rotX, float rotY,
+	public GameObject(Texture texture, Model model, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
-		super(texture, vertexArray, position, rotX, rotY, rotZ, scale);
+		super(texture, model, position, rotX, rotY, rotZ, scale);
 	}	
 	
-	public GameObject(String texturePath, Model vertexArray, Vector3f position, float rotX, float rotY,
+	public GameObject(String texturePath, Model model, Vector3f position, float rotX, float rotY,
 			float rotZ, float scale) {
-		super(new Texture(texturePath), vertexArray, position, rotX, rotY, rotZ, scale);
+		super(new Texture(texturePath), model, position, rotX, rotY, rotZ, scale);
 	}	
 	
 	public void delete() {

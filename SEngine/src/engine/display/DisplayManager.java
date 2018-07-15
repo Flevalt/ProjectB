@@ -9,7 +9,7 @@ public class DisplayManager {
 	
 	private long window;
 	private boolean windowCreated;
-	private Resolution resolution = Resolution.SVGA;
+	public static Resolution resolution = Resolution.SVGA;
 	private String title = "";
 	private boolean fullscreen;
 	
@@ -79,7 +79,4 @@ public class DisplayManager {
 		return window;
 	}
 	
-	public Resolution getResolution() {
-		return resolution;
-	}
 }
