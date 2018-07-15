@@ -151,11 +151,31 @@ public class Entity extends Observable{
 		}
 	}
 
-	public Model getVertexArray() {
+	public Model getModel() {
 		if(texturedModel != null) {
-			return texturedModel.getVertexArray();		
+			return texturedModel.getModel();		
 		}else {
 			return null;
 		}
+	}
+	/**
+	 * Deletes the model and the textures of the {@link GameObject}.<br>
+	 * If another {@link TexturedModel} uses the resources it will also
+	 * lose them.
+	 */
+	public void deleteResources() {
+		this.texturedModel.delete();
+	}
+	/**
+	 * Deletes the textures of the {@link GameObject}.<br>
+	 * If another {@link TexturedModel} uses the resources it will also
+	 * lose them.
+	 */
+	public void deleteTexture() {
+		this.texturedModel.getTexture().delete();
+	}
+	
+	public void changeTexture(Texture texture) {
+		this.texturedModel.setTexture(texture);
 	}
 }

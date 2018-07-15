@@ -148,14 +148,14 @@ public class Renderer {
 	
 	private void renderDisplayObject(Entity obj) {
 		//Bind the resources
-		GL30.glBindVertexArray(obj.getVertexArray().getVertexArrayObjectId());
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, obj.getVertexArray().getIndexBufferObjectId());
+		GL30.glBindVertexArray(obj.getModel().getVertexArrayObjectId());
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, obj.getModel().getIndexBufferObjectId());
 		GL20.glEnableVertexAttribArray(Model.VERTEX_ATTRIBUTE_INDEX);
 		GL20.glEnableVertexAttribArray(Model.TEXTURE_COORDINATE_ATTRIBUTE_INDEX);
 		
-		shader.loadViewMatrix(camera);
+		shader.loadViewMatrix(camera); //Viewmatrix for normal 3D 
 		if(renderMode == RenderMode.MODE_2D) {
-			loadProjectionMatrix();
+			loadProjectionMatrix(); //Projection matrix only has to be loaded every frame if the mode is set to 2D 
 		}
 		//set the transformation matrix
 		Matrix4f transformationMatrix = Matrix4f.createTransformationMatrix(
@@ -165,7 +165,7 @@ public class Renderer {
 		//Activate and bind the textures
 		GL13.glActiveTexture(obj.getTexture().getTextureId());
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, obj.getTexture().getTextureId());
-		GL11.glDrawElements(GL11.GL_TRIANGLES, obj.getVertexArray().getCount(), GL11.GL_UNSIGNED_BYTE, 0); //Render elements
+		GL11.glDrawElements(GL11.GL_TRIANGLES, obj.getModel().getCount(), GL11.GL_UNSIGNED_BYTE, 0); //Render elements
 		
 		//Unbind the resources
 		GL20.glDisableVertexAttribArray(Model.VERTEX_ATTRIBUTE_INDEX);

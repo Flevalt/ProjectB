@@ -14,6 +14,7 @@ public class DemoGame extends Engine {
 	
 	private GameObject character1;
 	private GameObject character2;
+	private GameObject character3;
 	
 	public static void main(String[] args) {
 		DemoGame game = new DemoGame();
@@ -73,6 +74,9 @@ public class DemoGame extends Engine {
 		if(Input.keys[Input.KEY_KP_SUBTRACT]) {
 			this.getCamera().changePosition(0.0f, 0.0f, 0.05f);
 		}	
+		if(Input.keys[Input.KEY_DELETE]) {
+			character1.getTexture().delete(); //Delete textures of character 1 and 3.
+		}	
 	}
 
 	private void printPosition(GameObject obj) {
@@ -90,11 +94,14 @@ public class DemoGame extends Engine {
 		
 		Scene scene = new Scene();
 		character1 = new GameObject("Character1", obj2);
+		character3 = new GameObject("Character3", obj2);
 		character2 = new GameObject("Character2", obj);
 		character2.setScale(0.2f);
-		character1.setPosition(new Vector3f(0f, 0f, -2f));
+		character1.setPosition(new Vector3f(0f, 0f, 0f));
+		character3.setPosition(new Vector3f(1f, 0f, 0f));
 		scene.addDisplayObject(character1);
 		scene.addDisplayObject(character2);
+		scene.addDisplayObject(character3);
 		setScene(scene);
 	}
 

@@ -70,6 +70,6 @@ public class Texture{
 
 	
 	public void delete() {
-		//TODO:Implement
+		GL11.glDeleteTextures(texture);
 	}
 }

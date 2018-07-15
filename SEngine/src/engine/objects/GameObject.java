@@ -52,8 +52,13 @@ public class GameObject extends Entity {
 		super(new Texture(texturePath), model, position, rotX, rotY, rotZ, scale);
 	}	
 	
-	public void delete() {
-		//TODO: Implement
+
+	public void deleteResources() {
+		this.getModel().delete();
+	}
+	
+	public void dispose() {
+		
 	}
 
 }
